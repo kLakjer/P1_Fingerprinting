@@ -28,8 +28,6 @@ def getData():
                         file.write(f"{currentTime},{str(data[(i*3):((i+1)*3)])[1:-1]}\n")
                     break
 
-# This is a test
-
 def main():
     clearData()
     for i in range(1):
