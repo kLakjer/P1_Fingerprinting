@@ -18,7 +18,7 @@ void loop() {
     } else {
         for (int i = 0; i < n; ++i) {
 
-            if (WiFi.SSID(i) == "AAU") {
+            if ((WiFi.SSID(i) == "AAU") or (WiFi.SSID(i) == "dlink")) {
               Serial.print(WiFi.SSID(i));
               Serial.print(",");
               Serial.print(WiFi.RSSI(i));

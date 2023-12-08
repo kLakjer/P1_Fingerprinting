@@ -45,8 +45,8 @@ def linePlot(arr): # Funktionen der laver en graf over spillet hvor inputtet er 
         plt.show()
 
 def main():
-    plotBSSID('R3.csv')
-    linePlot(plotBSSID('R3.csv'))
+    plotBSSID('R1_c.csv')
+    linePlot(plotBSSID('R1_c.csv'))
 
 if __name__ == '__main__':
     main()

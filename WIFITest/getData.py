@@ -21,18 +21,16 @@ def getData():
         if ser.in_waiting > 0:
             data = ser.readline().decode('utf-8').strip()  # Read a line of data from the serial port
             if data:
-                with open('networks.csv', 'a') as file:
+                with open('networks.csv', 'w') as file:
                     currentTime = str(time.strftime("%H:%M:%S", time.localtime()))
                     data = data.split(",")[0:-1]
                     for i in range(int((len(data))/3)):
                         file.write(f"{currentTime},{str(data[(i*3):((i+1)*3)])[1:-1]}\n")
                     break
 
-# This is a test
-
 def main():
     clearData()
-    for i in range(1):
+    while True:
         getData()
 
 if __name__ == '__main__':
