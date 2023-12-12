@@ -3,6 +3,19 @@ from random import uniform
 from numpy import argmax
 from time import time
 
+RP_locs = [[[140,90],[140,140]],
+           [[200,90],[200,140]],
+           [[260,90],[260,140]],
+           [[140,195],[200,195],[260,195]]]
+
+RP_names = ["C2-203","C2-205","C2-207","G222"]
+
+RP_inputs = [[1,2],[3,4],[5,6],[7,8,9]]
+
+
+
+
+
 class label:
     def __init__(self, text:str, text_color:str="Black", background_color:str="Grey") -> None:
         self.text = text
@@ -26,7 +39,6 @@ class label:
         self.text = string
         self.item = font.render(self.text, True, self.text_color, self.background_color)
         self.update()
-
 
 class room:
     def __init__(self, RP_loc, RP_size, RP_name, RP_inputs) -> None:
@@ -67,24 +79,6 @@ color1 = [254,27,27]
 color2 = [220,200,62]
 color3 = [60,221,75]
 
-RP_Loc_room1 = [[140,90],[140,140]]
-RP_Loc_room2 = [[200,90],[200,140]]
-RP_Loc_room3 = [[260,90],[260,140]]
-RP_Loc_G1 = [[140,195],[200,195],[260,195]]
-
-RP_locs = [[[140,90],[140,140]],
-           [[200,90],[200,140]],
-           [[260,90],[260,140]],
-           [[140,195],[200,195],[260,195]]]
-
-RP_names = ["C2-203","C2-205","C2-207","G222"]
-
-RP_inputs = [[1,2],[3,4],[5,6],[7,8,9]]
-
-room1_RP = [1,2]
-room2_RP = [3,4]
-room3_RP = [5,6]
-G1_RP = [7,8,9]
 
 crossSize = 7
 
@@ -197,46 +191,16 @@ while runing:
                     header.content(f'Devices in room {values.RP_name}: {devicesInRoom[index]}')
             
 
-    color = checkMost(0)
-    if color == color1 and not ignoreList[0]:
-        most_label.content("Most devices in room: 2-203")
-    elif ignoreList[0]:
-        if color == color1:
-            most_label.content("Most devices in room: None")
-        color = "Grey"
-    for loc in RP_Loc_room1:
-        drawCross(loc, crossSize, color)
-    
-    color = checkMost(1)
-    if color == color1 and not ignoreList[1]:
-        most_label.content("Most devices in room: 2-205")
-    elif ignoreList[1]:
-        if color == color1:
-            most_label.content("Most devices in room: None")
-        color = "Grey"
-    for loc in RP_Loc_room2:
-        drawCross(loc, crossSize, color)
-
-    color = checkMost(2)
-    if color == color1 and not ignoreList[2]:
-        most_label.content("Most devices in room: 2-207")
-    elif ignoreList[2]:
-        if color == color1:
-            most_label.content("Most devices in room: None")
-        color = "Grey"
-    for loc in RP_Loc_room3:
-        drawCross(loc, crossSize, color)
-
-    color = checkMost(3)
-    if color == color1 and not ignoreList[3]:
-        most_label.content("Most devices in room: G222")
-    elif ignoreList[3]:
-        if color == color1:
-            most_label.content("Most devices in room: None")
-        color = "Grey"
-    for loc in RP_Loc_G1:
-        drawCross(loc, crossSize, color)
-
+    for index, value in enumerate(rooms):
+        color = checkMost(index)
+        if color == color1 and not ignoreList[index]:
+            most_label.content(f"Most devices in room: {value.RP_name}")
+        elif ignoreList[index]:
+            if color == color1:
+                most_label.content("Most devices in room: None")
+            color = "Grey"
+        for loc in value.RP_loc:
+            drawCross(loc, crossSize, color)
 
     pygame.display.update()
 pygame.quit()
