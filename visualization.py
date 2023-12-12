@@ -1,8 +1,7 @@
 import pygame
-import random
+from random import uniform
 from numpy import argmax
-import time
-import main
+from time import time
 
 class label:
     def __init__(self, text:str, text_color:str="Black", background_color:str="Grey") -> None:
@@ -29,13 +28,27 @@ class label:
         self.update()
 
 
+class room:
+    def __init__(self, RP_loc, RP_size, RP_name, RP_inputs) -> None:
+        self.RP_loc = RP_loc
+        self.RP_size = RP_size
+        self.RP_name = RP_name
+        self.RP_inputs = RP_inputs
+    
+    def inside(self, point, edge):
+        for value in self.RP_loc:
+            if within(value,[self.RP_size+edge]*2,point):
+                return True
+        return False
 
-devicesInRoom = [0]*4
+
+
+devicesInRoom = [1,2,3,4]
 ignoreList = [0,0,0,0]
 
 evacuateMode = False
 
-startTime = time.time()
+startTime = time()
 
 # pygame setup
 pygame.init()
@@ -47,7 +60,7 @@ dt = 0
 
 font = pygame.font.Font('freesansbold.ttf', 16)
 
-bg_img = pygame.image.load('Map-AAU.png')
+bg_img = pygame.image.load('Self\Code\Python\Random\Map-AAU.png')
 bg_img = pygame.transform.scale(bg_img,(width,height))
 
 color1 = [254,27,27]
@@ -59,12 +72,24 @@ RP_Loc_room2 = [[200,90],[200,140]]
 RP_Loc_room3 = [[260,90],[260,140]]
 RP_Loc_G1 = [[140,195],[200,195],[260,195]]
 
+RP_locs = [[[140,90],[140,140]],
+           [[200,90],[200,140]],
+           [[260,90],[260,140]],
+           [[140,195],[200,195],[260,195]]]
+
+RP_names = ["C2-203","C2-205","C2-207","G222"]
+
+RP_inputs = [[1,2],[3,4],[5,6],[7,8,9]]
+
 room1_RP = [1,2]
-room2_RP = [8,9]
-room3_RP = [6,7]
-G1_RP = [3,4,5]
+room2_RP = [3,4]
+room3_RP = [5,6]
+G1_RP = [7,8,9]
 
 crossSize = 7
+
+
+rooms = [room(RP_loc,crossSize, RP_names[index], RP_inputs[index]) for index, RP_loc in enumerate(RP_locs)]
 
 font = pygame.font.Font('freesansbold.ttf', 16)
 
@@ -100,9 +125,10 @@ def evacuate():
     return rooms, roomRects
 
 def getRP():
-    time.sleep(0.5)
-    result, RDiff, winner = main.checkBestMatch()
-    return winner
+    global startTime
+    if time() - startTime >= 1:
+        startTime = time()
+        return int(uniform(1,10))
 
 def checkMost(room):
     if argmax(devicesInRoom) == room:
@@ -132,20 +158,17 @@ while runing:
 
     if evacuateMode:
         rp = getRP()
-        if rp in room1_RP:
-            devicesInRoom = [1,0,0,0]
-        if rp in room2_RP:
-            devicesInRoom = [0,1,0,0]
-        if rp in room3_RP:
-            devicesInRoom = [0,0,1,0]
-        if rp in G1_RP:
-            devicesInRoom = [0,0,0,1]
-        room, rect = evacuate()
+        for index, value in enumerate(rooms):
+            if rp in value.RP_inputs:
+                devicesInRoom = [0] * len(rooms)
+                devicesInRoom[index] = 1
+
+        room_, rect = evacuate()
         screen.blits([
-        [room[0],rect[0]],
-        [room[1],rect[1]],
-        [room[2],rect[2]],
-        [room[3],rect[3]],
+        [room_[0],rect[0]],
+        [room_[1],rect[1]],
+        [room_[2],rect[2]],
+        [room_[3],rect[3]],
         [most_label.item,most_label.item_rect],
         [ignore_button.item,ignore_button.item_rect]
         ])
@@ -168,19 +191,11 @@ while runing:
 
         elif event.type == pygame.MOUSEMOTION:
             mouse_Loc = pygame.mouse.get_pos()
-            if within(RP_Loc_room1[0],[crossSize+4] * 2,mouse_Loc) or within(RP_Loc_room1[1],[crossSize+4] * 2,mouse_Loc):
-                header.content(f'Devices in room 2-203: {devicesInRoom[0]}')
 
-            elif within(RP_Loc_room2[0],[crossSize+4] * 2,mouse_Loc) or within(RP_Loc_room2[1],[crossSize+4] * 2,mouse_Loc):
-                header.content(f'Devices in room 2-205: {devicesInRoom[1]}')
-
-            elif within(RP_Loc_room3[0],[crossSize+4] * 2,mouse_Loc) or within(RP_Loc_room3[1],[crossSize+4] * 2,mouse_Loc):
-                header.content(f'Devices in room 2-207: {devicesInRoom[2]}')
-                
-            elif within(RP_Loc_G1[0],[crossSize+4] * 2,mouse_Loc) or within(RP_Loc_G1[1],[crossSize+4] * 2,mouse_Loc) or within(RP_Loc_G1[2],[crossSize+4] * 2,mouse_Loc):
-                header.content(f'Devices in room G222: {devicesInRoom[3]}')
+            for index, values in enumerate(rooms):
+                if values.inside(mouse_Loc,4):
+                    header.content(f'Devices in room {values.RP_name}: {devicesInRoom[index]}')
             
-
 
     color = checkMost(0)
     if color == color1 and not ignoreList[0]:
