@@ -2,17 +2,19 @@ import pygame
 from random import uniform
 from numpy import argmax
 from time import time
+from time import sleep
+import main
 
 RP_locs = [[[140,90],[140,140]],
            [[200,90],[200,140]],
            [[260,90],[260,140]],
+           [[20,195]],
            [[140,195]],
-           [[200,195]],
-           [[260,195]]]
+           [[280,195]]]
 
 RP_names = ["C2-203","C2-205","C2-207","G222-1","G222-2","G222-3"]
 
-RP_inputs = [[1,2],[3,4],[5,6],[7],[8],[9]]
+RP_inputs = [[1,2],[8,9],[6,7],[5],[3],[4]]
 
 
 
@@ -72,7 +74,7 @@ dt = 0
 
 font = pygame.font.Font('freesansbold.ttf', 16)
 
-bg_img = pygame.image.load('Self\Code\Python\Random\Map-AAU.png')
+bg_img = pygame.image.load('Map-AAU.png')
 bg_img = pygame.transform.scale(bg_img,(width,height))
 
 color1 = [254,27,27]
@@ -119,10 +121,9 @@ def evacuate():
     return rooms, roomRects
 
 def getRP():
-    global startTime
-    if time() - startTime >= 1:
-        startTime = time()
-        return int(uniform(1,10))
+    sleep(0.5)
+    _, _, winner = main.checkBestMatch()
+    return winner
 
 def checkMost(room):
     if argmax(devicesInRoom) == room:
