@@ -14,8 +14,6 @@ RP_inputs = [[1,2],[3,4],[5,6],[7,8,9]]
 
 
 
-
-
 class label:
     def __init__(self, text:str, text_color:str="Black", background_color:str="Grey") -> None:
         self.text = text
@@ -55,8 +53,8 @@ class room:
 
 
 
-devicesInRoom = [1,2,3,4]
-ignoreList = [0,0,0,0]
+devicesInRoom = [0]*len(RP_names)
+ignoreList = [0]*len(RP_names)
 
 evacuateMode = False
 
