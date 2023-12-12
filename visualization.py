@@ -2,6 +2,7 @@ import pygame
 import random
 from numpy import argmax
 import time
+import main
 
 class label:
     def __init__(self, text:str, text_color:str="Black", background_color:str="Grey") -> None:
@@ -46,7 +47,7 @@ dt = 0
 
 font = pygame.font.Font('freesansbold.ttf', 16)
 
-bg_img = pygame.image.load('Self\Code\Python\Random\Map-AAU.png')
+bg_img = pygame.image.load('Map-AAU.png')
 bg_img = pygame.transform.scale(bg_img,(width,height))
 
 color1 = [254,27,27]
@@ -59,9 +60,9 @@ RP_Loc_room3 = [[260,90],[260,140]]
 RP_Loc_G1 = [[140,195],[200,195],[260,195]]
 
 room1_RP = [1,2]
-room2_RP = [3,4]
-room3_RP = [5,6]
-G1_RP = [7,8,9]
+room2_RP = [8,9]
+room3_RP = [6,7]
+G1_RP = [3,4,5]
 
 crossSize = 7
 
@@ -99,10 +100,9 @@ def evacuate():
     return rooms, roomRects
 
 def getRP():
-    global startTime
-    if time.time() - startTime >= 1:
-        startTime = time.time()
-        return int(random.uniform(1,10))
+    time.sleep(0.5)
+    result, RDiff, winner = main.checkBestMatch()
+    return winner
 
 def checkMost(room):
     if argmax(devicesInRoom) == room:
