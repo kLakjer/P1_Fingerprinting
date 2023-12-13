@@ -2,7 +2,6 @@
 #--Importing libraris--#           ¤\label{line:sp}¤
 #----------------------#
 import pygame
-from random import uniform
 from numpy import argmax
 from time import time
 from time import sleep
