@@ -1,19 +1,18 @@
 #----------------------#
-#--Importing libraris--#           ¤\label{line:sp}¤
+#--Importing libraris--#
 #----------------------#
-import pygame
+import pygame           ¤\label{code:visulization:imports}¤
 from numpy import argmax
-from time import time
 from time import sleep
 import main
 
 
 #----------------------#
-#--Creating new rooms--#
+#--Creating new rooms--#           ¤\label{code:visulization:new_rooms}¤
 #----------------------#
 
 # RP's X and Y location on the screen
-RP_locs = [[[140,90],[140,140]],
+RP_locs = [[[140,90],[140,140]],           
            [[200,90],[200,140]],
            [[260,90],[260,140]],
            [[20,195]],
@@ -32,8 +31,8 @@ RP_inputs = [[1,2],[8,9],[6,7],[5],[3],[4]]
 #--------------------#
 
 # Text label class
-class label:
-    def __init__(self, text:str, text_color:str="Black", background_color:str="Grey") -> None:
+class label:           ¤\label{code:visulization:class:label}¤
+    def __init__(self, text:str, text_color:str="Black", background_color:str="Grey") -> None:            ¤\label{code:visulization:class:label:init}¤
         """
         __init_(self, text:str, text_color:str="Black", background_color:str="Grey")
          | 
@@ -64,7 +63,7 @@ class label:
         # Updating to show the text on the screen
         self.update()
     
-    def update(self) -> None:
+    def update(self) -> None:           ¤\label{code:visulization:class:label:update}¤
         """
         update(self)
          | 
@@ -79,7 +78,7 @@ class label:
         # Setting the labels center
         self.item_rect.center = self.item_center
     
-    def loc(self, xloc:int, yloc:int) -> None:
+    def loc(self, xloc:int, yloc:int) -> None:           ¤\label{code:visulization:class:label:loc}¤
         """
         loc(self, xloc:int, yloc:int)
          | 
@@ -99,7 +98,7 @@ class label:
         # updating the position
         self.update()
     
-    def content(self, string:str) -> None:
+    def content(self, string:str) -> None:           ¤\label{code:visulization:class:label:content}¤
         """
         content(self, string:str)
          | 
@@ -116,8 +115,8 @@ class label:
         self.item = font.render(self.text, True, self.text_color, self.background_color)
 
 # Rooms class
-class room:
-    def __init__(self, RP_loc:list, RP_size:int, RP_name:str, RP_inputs:list) -> None:
+class room:           ¤\label{code:visulization:class:room}¤
+    def __init__(self, RP_loc:list, RP_size:int, RP_name:str, RP_inputs:list) -> None:           ¤\label{code:visulization:class:room:init}¤
         """
         __init__(self, RP_loc:list, RP_size:int, RP_name:str, RP_inputs:list)
          | 
@@ -141,7 +140,7 @@ class room:
         self.RP_name = RP_name
         self.RP_inputs = RP_inputs
     
-    def inside(self, point:list, edge:int) -> bool:
+    def inside(self, point:list, edge:int) -> bool:           ¤\label{code:visulization:class:room:inside}¤
         """
         inside(self, point:list, edge:int)
          | 
@@ -163,7 +162,7 @@ class room:
         return False
 
 
-# Resseting the devices in rooms and ignore list to only contain zeros
+# Resseting the devices in rooms and ignore list to only contain zeros           ¤\label{code:visulization:init}¤
 devicesInRoom = [0]*len(RP_names)
 ignoreList = [0]*len(RP_names)
 
@@ -171,7 +170,7 @@ ignoreList = [0]*len(RP_names)
 evacuateMode = False
 
 
-# pygame setup
+# pygame setup           ¤\label{code:visulization:pygame_setup}¤
 pygame.init()
 width,height = 535,535 # Screen size
 screen = pygame.display.set_mode((width,height))
@@ -194,12 +193,12 @@ color3 = [60,221,75]
 crossSize = 7
 
 # initializing all the room
-rooms = [room(RP_loc,crossSize, RP_names[index], RP_inputs[index]) for index, RP_loc in enumerate(RP_locs)]
+rooms = [room(RP_loc,crossSize, RP_names[index], RP_inputs[index]) for index, RP_loc in enumerate(RP_locs)]           ¤\label{code:visulization:room_init}¤
 
 #-------------------------------------------#
-#--Definging all the labels for the screen--#
+#--Definging all the labels for the screen--#           ¤\label{code:visulization:labels}¤
 #-------------------------------------------#
-header = label("Devices in room X: XX")
+header = label("Devices in room X: XX")           
 header.loc(width//2-header.item_rect.width//2,32)
 
 evacuate_button = label("Evacuate Mode")
@@ -214,7 +213,7 @@ ignore_button.loc(0,height-evacuate_button.item_rect.height-most_label.item_rect
 
 
 
-def drawCross(loc:list, size:int, color) -> None:
+def drawCross(loc:list, size:int, color) -> None:           ¤\label{code:visulization:func:drawCross}¤
     """
     drawCross(loc:list, size:int, color:str)
      | 
@@ -234,7 +233,7 @@ def drawCross(loc:list, size:int, color) -> None:
     pygame.draw.line(screen, color, [loc[0]-size, loc[1]-size], [loc[0]+size, loc[1]+size], 2)
     pygame.draw.line(screen, color, [loc[0]+size, loc[1]-size], [loc[0]-size, loc[1]+size], 2)
 
-def within(itemloc:list, size:list, mouseloc:list) -> bool:
+def within(itemloc:list, size:list, mouseloc:list) -> bool:           ¤\label{code:visulization:func:within}¤
     """
     within(itemloc:list, size:list, mouseloc:list)
      | 
@@ -253,7 +252,7 @@ def within(itemloc:list, size:list, mouseloc:list) -> bool:
     # cheking the mouselocation bassed on the item
     return itemloc[0]-size[0]//2 < mouseloc[0] < itemloc[0]+size[0]//2 and itemloc[1]-size[1]//2 < mouseloc[1] < itemloc[1]+size[1]//2
 
-def evacuate():
+def evacuate():           ¤\label{code:visulization:func:evacuate}¤
     """
     evacuate()
      | 
@@ -271,7 +270,7 @@ def evacuate():
 
     return rooms, roomRects
 
-def getRP() -> int:
+def getRP() -> int:           ¤\label{code:visulization:func:getRP}¤
     """
     grtRP()
      |
@@ -282,7 +281,7 @@ def getRP() -> int:
     _, _, winner = main.checkBestMatch()
     return winner
 
-def checkMost(room:int) -> list:
+def checkMost(room:int) -> list:           ¤\label{code:visulization:func:checkMost}¤
     """
     checkMost(room)
      |
@@ -299,7 +298,7 @@ def checkMost(room:int) -> list:
     else:
         return color3
 
-def ignore(list:list, index:int) -> list:
+def ignore(list:list, index:int) -> list:           ¤\label{code:visulization:func:ignore}¤
     """
     ignore(list:list, index:int)
      |
@@ -319,10 +318,10 @@ def ignore(list:list, index:int) -> list:
 #--The main loop--#
 #-----------------#
 runing = True
-while runing:
+while runing:           ¤\label{code:visulization:loop}¤
 
     # Showing the things on the screen that should always be there
-    screen.blits([
+    screen.blits([           ¤\label{code:visulization:main_blits}¤
         [bg_img,(0,0)],
         [header.item, header.item_rect],
         [evacuate_button.item,evacuate_button.item_rect]
@@ -331,7 +330,7 @@ while runing:
     #--------------#
     #--Evacuation--#
     #--------------#
-    if evacuateMode:
+    if evacuateMode:           ¤\label{code:visulization:evacuation}¤
         rp = getRP() # Getting the RP
 
         # loop all the rooms and cheking if the device is in the room
@@ -355,13 +354,13 @@ while runing:
     #-----------------#
     #--Pygame events--#
     #-----------------#
-    for event in pygame.event.get():
+    for event in pygame.event.get():           ¤\label{code:visulization:events}¤
         # Closing the game
         if event.type == pygame.QUIT:
             runing = False
         
         # Clicking on the screen
-        elif event.type == pygame.MOUSEBUTTONDOWN:
+        elif event.type == pygame.MOUSEBUTTONDOWN:           ¤\label{code:visulization:event:click}¤
             mouse_Loc = pygame.mouse.get_pos()
 
             # Checks if clicking the evacuate button
@@ -376,7 +375,7 @@ while runing:
                 most_label.content("Most devices in room: None")
         
         # Moving the mouse
-        elif event.type == pygame.MOUSEMOTION:
+        elif event.type == pygame.MOUSEMOTION:           ¤\label{code:visulization:event:move}¤
             mouse_Loc = pygame.mouse.get_pos()
 
             # checks if hovering over a RP
@@ -385,9 +384,9 @@ while runing:
                     header.content(f'Devices in room {values.RP_name}: {devicesInRoom[index]}')
             
     #-----------------------------------------------------#
-    #--Updating the color of RP's and Most devices label--# 
+    #--Updating the color of RP's and Most devices label--#            
     #-----------------------------------------------------#
-    for index, value in enumerate(rooms):
+    for index, value in enumerate(rooms):           ¤\label{code:visulization:color}¤
         color = checkMost(index) # Color is color1 or color3
         # If it's the room with most devices and is not on the ignore list
         if color == color1 and not ignoreList[index]:
